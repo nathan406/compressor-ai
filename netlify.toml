@@ -6,9 +6,6 @@
   # No publish directory needed — the OpenNext adapter
   # handles the output automatically.
 
-# Set the base directory to "backend" in the Netlify UI:
-# Site settings → Build & deploy → Build settings → Base directory
-
 # Environment variables (set in Netlify Dashboard):
 # ANTHROPIC_API_KEY  — Anthropic API key for Claude AI
 # CLAUDE_MODEL       — Claude model (default: claude-sonnet-4-6)
