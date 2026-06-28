@@ -52,10 +52,32 @@ script runs, or serve the HTML from the same origin as the Next.js server.
 
 ## Production Deployment
 
+### Netlify (recommended)
+
+The project includes a `netlify.toml` at the repo root for zero-config deployment.
+
+1. Push the repo to GitHub
+2. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
+3. Select your repo — the `netlify.toml` handles the base directory automatically
+4. Netlify auto-detects Next.js via the OpenNext adapter
+5. Add environment variables in **Site settings → Environment variables**:
+
+| Variable            | Required | Description                        |
+|---------------------|----------|------------------------------------|
+| `ANTHROPIC_API_KEY` | No       | Enables real Claude AI responses   |
+| `CLAUDE_MODEL`      | No       | Claude model (default: claude-sonnet-4-6) |
+
+6. Deploy — the app goes live with a Netlify URL
+
+> **Note:** The JSON file database is ephemeral on Netlify's serverless
+> functions. Jobs won't persist across redeploys. For persistence,
+> swap `lib/db.ts` for a PostgreSQL connection (e.g. Neon, Supabase).
+
+### Other hosts
+
 ```bash
 npm run build
 npm start         # production server on port 8000
 ```
 
-Deploy to Vercel, Railway, Fly.io, or any Node.js host. For Vercel, set the
-environment variables in the project dashboard.
+Deploy to Vercel, Railway, Fly.io, or any Node.js host.
