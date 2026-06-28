@@ -3,12 +3,9 @@
 
 [build]
   command = "npm run build"
-  # No publish directory needed — the OpenNext adapter
-  # handles the output automatically.
+  publish = ".next"
 
 # Explicitly enable the Netlify Next.js plugin (OpenNext adapter).
-# Auto-detection works for detection but doesn't always apply the
-# adapter — this forces it to run after the build.
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
