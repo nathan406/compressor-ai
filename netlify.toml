@@ -6,6 +6,12 @@
   # No publish directory needed — the OpenNext adapter
   # handles the output automatically.
 
+# Explicitly enable the Netlify Next.js plugin (OpenNext adapter).
+# Auto-detection works for detection but doesn't always apply the
+# adapter — this forces it to run after the build.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 # Environment variables (set in Netlify Dashboard):
 # ANTHROPIC_API_KEY  — Anthropic API key for Claude AI
 # CLAUDE_MODEL       — Claude model (default: claude-sonnet-4-6)
