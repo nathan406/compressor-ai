@@ -19,21 +19,38 @@ export const Sidebar = ({
 }) => {
   const adminNav = [
     {
-      g: 'Platform',
-      items: ['Overview', 'AI Efficiency Score', 'Infrastructure Scan', 'Operations'],
+      g: 'Dashboard',
+      items: ['Overview'],
     },
     {
       g: '5-Layer Optimization',
-      items: ['Compression Jobs', 'Upload Model', 'Optimization Center'],
+      items: [
+        'Upload Model',
+        'Prompt Optimization',
+        'Smart Routing',
+        'Context Compression',
+        'Inference Network',
+        'Compression Jobs',
+      ],
     },
-    { g: 'Intelligence', items: ['Cost Intelligence', 'Analytics', 'Reports'] },
-    { g: 'System', items: ['Integrations', 'Enterprise Clients'] },
   ];
 
   const demoNav = [
-    { g: 'Overview', items: ['Overview', 'AI Efficiency Score', 'Operations'] },
-    { g: 'Results', items: ['Optimization Center', 'Cost Intelligence', 'Reports'] },
-    { g: 'System', items: ['Enterprise Clients'] },
+    {
+      g: 'Dashboard',
+      items: ['Overview'],
+    },
+    {
+      g: '5-Layer Optimization',
+      items: [
+        'Upload Model',
+        'Prompt Optimization',
+        'Smart Routing',
+        'Context Compression',
+        'Inference Network',
+        'Compression Jobs',
+      ],
+    },
   ];
 
   const nav = role === 'admin' ? adminNav : demoNav;
@@ -88,7 +105,7 @@ export const Sidebar = ({
               fontFamily: FF,
             }}
           >
-            Compressor<span style={{ color: C.cy }}>AI</span>
+            Compresor<span style={{ color: C.cy }}>AI</span>
           </span>
         </div>
         <div style={{ fontSize: 10, color: C.mu, marginBottom: 6 }}>
@@ -156,20 +173,6 @@ export const Sidebar = ({
                     }}
                   >
                     {act}
-                  </span>
-                )}
-                {p === 'AI Efficiency Score' && (
-                  <span
-                    style={{
-                      background: C.cy + '20',
-                      color: C.cy,
-                      borderRadius: 10,
-                      fontSize: 9,
-                      fontWeight: 800,
-                      padding: '1px 6px',
-                    }}
-                  >
-                    87
                   </span>
                 )}
               </button>

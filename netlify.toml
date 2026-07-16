@@ -1,4 +1,4 @@
-# Compressor AI — Netlify Deployment Configuration
+# Compresor AI — Netlify Deployment Configuration
 # Next.js 14 (App Router) with API routes
 
 [build]
@@ -13,7 +13,7 @@
   package = "@netlify/plugin-nextjs"
 
 # Environment variables (set in Netlify Dashboard):
-# ANTHROPIC_API_KEY  — Anthropic API key for Claude AI
+# ANTHROPIC_API_KEY  — Anthropic API key for Compresor AI
 # CLAUDE_MODEL       — Claude model (default: claude-sonnet-4-6)
 
 [[headers]]

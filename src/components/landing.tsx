@@ -14,7 +14,6 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
       n: 'Layer 1',
       t: 'Model Optimization',
       d: 'Quantization · Pruning · Distillation',
-      ic: '🧠',
       sv: '63% avg reduction',
       c: C.cy,
     },
@@ -22,7 +21,6 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
       n: 'Layer 2',
       t: 'Prompt Optimization',
       d: 'Remove redundant tokens automatically',
-      ic: '✏️',
       sv: '38% fewer tokens',
       c: C.gr,
     },
@@ -30,7 +28,6 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
       n: 'Layer 3',
       t: 'Smart Model Routing',
       d: 'Match request complexity to model size',
-      ic: '🔀',
       sv: '75% traffic rerouted',
       c: C.am,
     },
@@ -38,7 +35,6 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
       n: 'Layer 4',
       t: 'Context Compression',
       d: 'Summarize + compress conversation history',
-      ic: '🗜️',
       sv: '85% context savings',
       c: C.pu,
     },
@@ -46,7 +42,6 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
       n: 'Layer 5',
       t: 'Inference Network',
       d: 'Route traffic · Balance loads · Reclaim GPU',
-      ic: '🌐',
       sv: '34% GPU fleet saved',
       c: C.bl,
     },
@@ -97,7 +92,7 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
             <b style={{ fontSize: 16, color: C.bg }}>C</b>
           </div>
           <span style={{ fontSize: 18, fontWeight: 800, color: C.gh, fontFamily: FF }}>
-            Compressor<span style={{ color: C.cy }}>AI</span>
+            Compresor<span style={{ color: C.cy }}>AI</span>
           </span>
           <Badge c={C.am}>Enterprise</Badge>
         </div>
@@ -159,7 +154,7 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
               margin: '0 auto 16px',
             }}
           >
-            Compressor AI is the intelligence layer between AI applications and
+            Compresor AI is the intelligence layer between AI applications and
             compute infrastructure — automatically reducing costs across every
             layer of your AI stack without requiring any code changes.
           </p>
@@ -175,7 +170,7 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
             {[
               ['Stripe handles', 'Payments'],
               ['Cloudflare handles', 'Internet Traffic'],
-              ['Compressor AI handles', 'AI Efficiency'],
+              ['Compresor AI handles', 'AI Efficiency'],
             ].map(([a, b], i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: 11, color: C.mu }}>{a}</div>
@@ -273,7 +268,7 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
                   fontWeight: 700,
                 }}
               >
-                Compressor AI
+                Compresor AI
               </div>
               <div style={{ color: C.gh, fontSize: 14, fontWeight: 700, marginBottom: 10 }}>
                 Solves everything between:
@@ -374,7 +369,6 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
                     marginBottom: 9,
                   }}
                 >
-                  <div style={{ fontSize: 24 }}>{l.ic}</div>
                   <Badge c={l.c}>{l.n}</Badge>
                 </div>
                 <div style={{ color: C.gh, fontWeight: 700, fontSize: 15, marginBottom: 6 }}>
@@ -398,7 +392,7 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
           <Sec
             ey="Flagship Feature"
             title="AI Efficiency Score™"
-            sub="Every AI system gets a score. Like a credit score for AI infrastructure. Companies continuously improve their score using Compressor AI."
+            sub="Every AI system gets a score. Like a credit score for AI infrastructure. Companies continuously improve their score using Compresor AI."
             center
           />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', gap: 9, marginTop: 24 }}>
@@ -579,7 +573,7 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
           Ready to optimize your AI infrastructure?
         </h2>
         <p style={{ color: C.mL, maxWidth: 500, margin: '0 auto 24px', lineHeight: 1.8, fontSize: 14 }}>
-          Compressor AI is building the intelligence layer that sits between AI applications and
+          Compresor AI is building the intelligence layer that sits between AI applications and
           compute infrastructure, automatically reducing AI costs, improving performance, and
           optimizing every stage of inference.
         </p>

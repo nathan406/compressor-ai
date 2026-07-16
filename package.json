@@ -1,7 +1,7 @@
 {
-  "name": "compressor-ai-backend",
+  "name": "compresor-ai-backend",
   "version": "2.0.0",
-  "description": "Compressor AI — Next.js API Backend (AI Efficiency Operating System)",
+  "description": "Compresor AI — Next.js API Backend (AI Efficiency Operating System)",
   "private": true,
   "scripts": {
     "dev": "next dev -p 8000",

@@ -6,10 +6,9 @@ import { Landing } from '@/components/landing';
 import { Login } from '@/components/login';
 import { Sidebar } from '@/components/sidebar';
 import { Badge, LiveDot } from '@/components/primitives';
-import { PageOverview, PageScore, PageScan, PageOps } from '@/components/pages/dashboard';
-import { PageJobs, PageUpload, PageOpt } from '@/components/pages/jobs';
-import { PageCost, PageAnalytics, PageReports } from '@/components/pages/intelligence';
-import { PageIntegrations, PageClients } from '@/components/pages/system';
+import { PageOverview } from '@/components/pages/dashboard';
+import { PageJobs, PageUpload } from '@/components/pages/jobs';
+import { PagePromptOptimizer, PageSmartRouting, PageContextCompression, PageInferenceNet } from '@/components/pages/layers';
 
 export default function App() {
   const [screen, setScreen] = useState('landing');
@@ -53,27 +52,22 @@ export default function App() {
 
   const ADMIN: Record<string, React.ReactNode> = {
     Overview: <PageOverview jobs={jobs} setPage={setPage} />,
-    'AI Efficiency Score': <PageScore />,
-    'Infrastructure Scan': <PageScan />,
-    Operations: <PageOps />,
-    'Compression Jobs': <PageJobs jobs={jobs} setJobs={setJobs} />,
     'Upload Model': <PageUpload onJobCreated={newJob} />,
-    'Optimization Center': <PageOpt />,
-    'Cost Intelligence': <PageCost />,
-    Analytics: <PageAnalytics />,
-    Reports: <PageReports jobs={jobs} />,
-    Integrations: <PageIntegrations />,
-    'Enterprise Clients': <PageClients />,
+    'Prompt Optimization': <PagePromptOptimizer onJobCreated={newJob} />,
+    'Smart Routing': <PageSmartRouting onJobCreated={newJob} />,
+    'Context Compression': <PageContextCompression onJobCreated={newJob} />,
+    'Inference Network': <PageInferenceNet onJobCreated={newJob} />,
+    'Compression Jobs': <PageJobs jobs={jobs} setJobs={setJobs} />,
   };
 
   const DEMO: Record<string, React.ReactNode> = {
-    Overview: <PageOverview jobs={[]} setPage={setPage} />,
-    'AI Efficiency Score': <PageScore />,
-    Operations: <PageOps />,
-    'Optimization Center': <PageOpt />,
-    'Cost Intelligence': <PageCost />,
-    Reports: <PageReports jobs={[]} />,
-    'Enterprise Clients': <PageClients />,
+    Overview: <PageOverview jobs={jobs} setPage={setPage} />,
+    'Upload Model': <PageUpload onJobCreated={newJob} />,
+    'Prompt Optimization': <PagePromptOptimizer onJobCreated={newJob} />,
+    'Smart Routing': <PageSmartRouting onJobCreated={newJob} />,
+    'Context Compression': <PageContextCompression onJobCreated={newJob} />,
+    'Inference Network': <PageInferenceNet onJobCreated={newJob} />,
+    'Compression Jobs': <PageJobs jobs={jobs} setJobs={setJobs} />,
   };
 
   return (

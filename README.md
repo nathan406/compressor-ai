@@ -1,4 +1,4 @@
-# Compressor AI — Next.js Backend
+# Compresor AI — Next.js Backend
 
 **AI Efficiency Operating System** · API Server v2.0
 
@@ -7,7 +7,7 @@
 - **Next.js 14** (App Router, API Routes only)
 - **TypeScript**
 - **better-sqlite3** — zero-dependency SQLite (persists jobs across restarts)
-- **Anthropic SDK** — proxies Claude AI requests server-side (key never reaches the browser)
+- **Anthropic SDK** — proxies Compresor AI requests server-side (key never reaches the browser)
 
 ## Quick Start
 
@@ -24,9 +24,9 @@ npm run dev       # starts on http://localhost:8000
 
 | Variable            | Required | Default               | Description                          |
 |---------------------|----------|-----------------------|--------------------------------------|
-| `ANTHROPIC_API_KEY` | No       | —                     | Enables real Claude AI responses     |
+| `ANTHROPIC_API_KEY` | No       | —                     | Enables real Compresor AI responses     |
 | `CLAUDE_MODEL`      | No       | `claude-sonnet-4-6`   | Which Claude model to use            |
-| `DB_PATH`           | No       | `./compressor.db`     | SQLite database file path            |
+| `DB_PATH`           | No       | `./compresor.db`     | SQLite database file path            |
 
 The app runs fully without an API key — Claude endpoints return the fallback
 text the frontend supplies.
@@ -41,13 +41,13 @@ text the frontend supplies.
 | GET    | `/api/jobs/[id]`    | Fetch one job by ID                  |
 | PATCH  | `/api/jobs/[id]`    | Update job status / progress / log   |
 | DELETE | `/api/jobs/[id]`    | Delete a job                         |
-| POST   | `/api/claude`       | Proxy prompt to Claude AI            |
+| POST   | `/api/claude`       | Proxy prompt to Compresor AI            |
 | GET    | `/api/health`       | Service health check                 |
 
 ## Connecting the Frontend
 
 The static `frontend/index.html` points to `http://localhost:8000` by default.
-To change the backend URL, set `window.COMPRESSOR_API_BASE` before the app
+To change the backend URL, set `window.COMPRESOR_API_BASE` before the app
 script runs, or serve the HTML from the same origin as the Next.js server.
 
 ## Production Deployment
@@ -64,7 +64,7 @@ The project includes a `netlify.toml` at the repo root for zero-config deploymen
 
 | Variable            | Required | Description                        |
 |---------------------|----------|------------------------------------|
-| `ANTHROPIC_API_KEY` | No       | Enables real Claude AI responses   |
+| `ANTHROPIC_API_KEY` | No       | Enables real Compresor AI responses   |
 | `CLAUDE_MODEL`      | No       | Claude model (default: claude-sonnet-4-6) |
 
 6. Deploy — the app goes live with a Netlify URL

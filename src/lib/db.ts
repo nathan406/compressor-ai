@@ -15,7 +15,7 @@ import path from "path";
 
 const DB_PATH =
   process.env.DB_PATH ||
-  path.join(process.cwd(), "compressor.db.json");
+  path.join(process.cwd(), "compresor.db.json");
 
 // ── Types ─────────────────────────────────────────────────────────
 

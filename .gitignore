@@ -34,3 +34,4 @@ tsconfig.tsbuildinfo
 
 # Local database
 compressor.db.json
+nul

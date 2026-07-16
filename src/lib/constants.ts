@@ -1,6 +1,6 @@
 export const API =
   typeof window !== 'undefined'
-    ? (window as any).COMPRESSOR_API_BASE || ''
+    ? (window as any).COMPRESOR_API_BASE || ''
     : '';
 
 export const C = {

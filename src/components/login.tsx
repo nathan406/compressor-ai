@@ -7,13 +7,13 @@ import { Topo } from '@/components/canvas';
 
 export const Login = ({ onLogin }: { onLogin: (role: string) => void }) => {
   const [role, setRole] = useState('admin');
-  const [email, setEmail] = useState('admin@compressor.ai');
+  const [email, setEmail] = useState('admin@compresor.ai');
   const [pass, setPass] = useState('admin123');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
 
   const CR: Record<string, { email: string; pass: string }> = {
-    admin: { email: 'admin@compressor.ai', pass: 'admin123' },
+    admin: { email: 'admin@compresor.ai', pass: 'admin123' },
     demo: { email: 'demo@enterprise.ai', pass: 'demo123' },
   };
 
@@ -95,7 +95,7 @@ export const Login = ({ onLogin }: { onLogin: (role: string) => void }) => {
             <span
               style={{ fontSize: 21, fontWeight: 800, color: C.gh, fontFamily: FF }}
             >
-              Compressor<span style={{ color: C.cy }}>AI</span>
+              Compresor<span style={{ color: C.cy }}>AI</span>
             </span>
           </div>
           <div style={{ color: C.mL, fontSize: 13 }}>
@@ -187,7 +187,7 @@ export const Login = ({ onLogin }: { onLogin: (role: string) => void }) => {
               lineHeight: 1.7,
             }}
           >
-            <b style={{ color: C.mL }}>Admin:</b> admin@compressor.ai / admin123
+            <b style={{ color: C.mL }}>Admin:</b> admin@compresor.ai / admin123
             <br />
             <b style={{ color: C.mL }}>Demo:</b> demo@enterprise.ai / demo123
           </div>

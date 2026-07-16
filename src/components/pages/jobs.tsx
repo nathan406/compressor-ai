@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { C, FF, API, ai } from '@/lib/constants';
 import { Badge, Btn, Card, Sec, PBar, Inp, Sel, LiveDot } from '@/components/primitives';
+import { IconCheck, IconSparkle, IconEdit, IconShuffle, IconCompress, IconNetwork, IconBrain } from '@/components/icons';
 
 // ── PAGE: COMPRESSION JOBS ─────────────────────────────────────────
 export function PageJobs({
@@ -268,7 +269,7 @@ export function PageJobs({
                   onClick={() => runClaude(selJ)}
                   disabled={aiL}
                 >
-                  {aiL ? 'Analyzing…' : '✦ Claude AI 5-Layer Analysis'}
+                  {aiL ? 'Analyzing…' : <><IconSparkle size={12} color={C.am} /> Compresor AI 5-Layer Analysis</>}
                 </Btn>
               </div>
             </div>
@@ -384,7 +385,7 @@ export function PageJobs({
                     gap: 7,
                   }}
                 >
-                  <span style={{ color: C.am, fontSize: 13 }}>✦</span>
+                  <IconSparkle size={16} color={C.am} />
                   <span
                     style={{
                       color: C.am,
@@ -481,7 +482,7 @@ export function PageUpload({
         }}
       >
         <div style={{ textAlign: 'center', maxWidth: 420 }}>
-          <div style={{ fontSize: 48, marginBottom: 14 }}>✅</div>
+          <IconCheck size={48} color={C.gr} />
           <h2 style={{ color: C.gh, fontFamily: FF, marginBottom: 10 }}>
             Job Queued Successfully
           </h2>
@@ -579,7 +580,7 @@ export function PageUpload({
               letterSpacing: '0.1em',
             }}
           >
-            ✦ Context for Claude AI
+            <IconSparkle size={12} color={C.am} /> Context for Claude AI
           </div>
           <div style={{ fontSize: 10, color: C.mu, marginBottom: 12, lineHeight: 1.6 }}>
             Claude analyzes this data across all 5 layers to design the optimal strategy.

@@ -2,6 +2,7 @@
 
 import { C, FF } from '@/lib/constants';
 import { Card, PBar } from '@/components/primitives';
+import { IconLightbulb } from '@/components/icons';
 
 export const ScoreWidget = ({ score = 87 }: { score?: number }) => {
   const dims = [
@@ -87,7 +88,7 @@ export const ScoreWidget = ({ score = 87 }: { score?: number }) => {
           color: C.mL,
         }}
       >
-        💡{' '}
+        <IconLightbulb size={14} color={C.am} />{' '}
         <b style={{ color: C.am }}>14 optimization opportunities</b> —
         potential +8 score points
       </div>
