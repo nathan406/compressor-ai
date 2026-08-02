@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { C, FF } from '@/lib/constants';
-import { Badge, Btn, Card, Sec, Spark } from '@/components/primitives';
+import { Badge, Btn, Card, Sec } from '@/components/primitives';
 import { Topo } from '@/components/canvas';
+import nizaImg from '@/images/niza.jpeg';
+import nathanImg from '@/images/nathan.png';
 
 export const Landing = ({ onEnter }: { onEnter: () => void }) => {
   const [gpus, setGpus] = useState(5000);
@@ -55,6 +58,23 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
     { n: 'Baseten', f: 'Deployment' },
     { n: 'Together AI', f: 'Inference' },
     { n: 'Fireworks AI', f: 'Inference' },
+  ];
+
+  const team = [
+    {
+      n: 'Niza',
+      r: 'Founder',
+      b: 'Founded Compresor AI with a simple obsession: making AI dramatically cheaper for everyone who builds with it.',
+      img: nizaImg,
+      c: C.cy,
+    },
+    {
+      n: 'Nathan',
+      r: 'Senior Lead Developer',
+      b: 'Leads the engineering team across all 5 layers, turning efficiency theory into production systems that ship.',
+      img: nathanImg,
+      c: C.gr,
+    },
   ];
 
   return (
@@ -563,6 +583,86 @@ export const Landing = ({ onEnter }: { onEnter: () => void }) => {
                 <div style={{ fontSize: 11, color: C.mu, lineHeight: 1.6 }}>{pr.d}</div>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section style={{ padding: '60px 36px' }}>
+        <div style={{ maxWidth: 980, margin: '0 auto' }}>
+          <Sec
+            ey="About Us"
+            title="Built by people who've shipped AI at scale"
+            sub="Compresor AI is founded by Niza and Nathan — two engineers who've felt the GPU bill firsthand and decided to fix it."
+            center
+          />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))',
+              gap: 18,
+              maxWidth: 640,
+              margin: '0 auto',
+              alignItems: 'start',
+            }}
+          >
+            {team.map((m) => (
+              <Card key={m.n} cls="team-card" sx={{ padding: 0, overflow: 'hidden', textAlign: 'center' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: `${m.img.width} / ${m.img.height}`,
+                    background: C.sfH,
+                  }}
+                >
+                  <Image
+                    src={m.img}
+                    alt={`${m.n}, ${m.r}`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 310px"
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                  />
+                </div>
+                <div style={{ padding: '18px 20px 22px' }}>
+                  <div
+                    style={{
+                      display: 'inline-block',
+                      background: m.c + '18',
+                      border: `1px solid ${m.c}35`,
+                      color: m.c,
+                      borderRadius: 5,
+                      padding: '3px 10px',
+                      fontSize: 10,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {m.r}
+                  </div>
+                  <div style={{ color: C.gh, fontWeight: 800, fontSize: 17, fontFamily: FF }}>
+                    {m.n}
+                  </div>
+                  <div style={{ color: C.mL, fontSize: 12.5, lineHeight: 1.7, marginTop: 8 }}>
+                    {m.b}
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+          <div
+            style={{
+              marginTop: 26,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 12,
+              flexWrap: 'wrap',
+            }}
+          >
+            
           </div>
         </div>
       </section>

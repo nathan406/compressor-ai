@@ -62,3 +62,12 @@ textarea {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
+
+.team-card {
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px var(--cy), 0 8px 30px rgba(0, 229, 255, 0.12);
+}

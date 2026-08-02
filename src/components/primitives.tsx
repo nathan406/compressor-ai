@@ -102,14 +102,17 @@ export const Card = ({
   sx = {},
   glow,
   onClick,
+  cls,
 }: {
   children: React.ReactNode;
   sx?: React.CSSProperties;
   glow?: string;
   onClick?: () => void;
+  cls?: string;
 }) => (
   <div
     onClick={onClick}
+    className={cls}
     style={{
       background: C.sf,
       border: `1px solid ${glow ? glow + '50' : C.br}`,
