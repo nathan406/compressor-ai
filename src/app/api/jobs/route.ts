@@ -1,30 +1,52 @@
 /**
- * GET  /api/jobs        — list all jobs (oldest first)
- * POST /api/jobs        — create a new job
+ * GET  /api/jobs  — list all jobs for the authenticated user
+ * POST /api/jobs  — create a new optimization job
  */
-
 import { NextRequest, NextResponse } from "next/server";
-import { getAllJobs, getJobById, createJob, type JobRow } from "@/lib/db";
+import { getUser } from "@/lib/middleware";
+import { prisma } from "@/lib/db";
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204 });
 }
 
-export async function GET() {
-  const rows = getAllJobs();
-  return NextResponse.json(rows);
+export async function GET(req: NextRequest) {
+  const user = getUser(req);
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const jobs = await prisma.job.findMany({
+    where:   { userId: user.userId },
+    orderBy: { createdAt: "asc" },
+    include: { result: true },
+  });
+
+  return NextResponse.json(jobs);
 }
 
 export async function POST(req: NextRequest) {
+  const user = getUser(req);
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   const body = await req.json().catch(() => ({}));
 
-  // If the frontend supplies an explicit id (client-generated),
-  // check whether it already exists to avoid duplicates.
-  if (body.id != null) {
-    const existing = getJobById(body.id);
-    if (existing) return NextResponse.json(existing);
-  }
+  const job = await prisma.job.create({
+    data: {
+      userId:       user.userId,
+      modelName:    String(body.modelName    ?? "Unknown Model"),
+      params:       String(body.params       ?? ""),
+      arch:         String(body.arch         ?? "transformer"),
+      strategy:     String(body.strategy     ?? "quantization_int8"),
+      priority:     String(body.priority     ?? "normal"),
+      gpuLogs:      String(body.gpuLogs      ?? ""),
+      latency:      String(body.latency      ?? ""),
+      originalSize: Number(body.originalSize ?? 0),
+      status:       "pending",
+      progress:     0,
+      log:          "",
+      savings:      0,
+    },
+    include: { result: true },
+  });
 
-  const newRow = createJob(body);
-  return NextResponse.json(newRow, { status: 201 });
+  return NextResponse.json(job, { status: 201 });
 }

@@ -1,0 +1,262 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Live Demo: Full-System Compression ──────────────────────────
+// A visitor pastes a link to their AI product (site, docs, API
+// response, chat endpoint, anything public). We fetch it, extract
+// real text, and run REAL Layer-2 compression on it via Claude.
+// The other 4 layers (model, routing, context, inference) are then
+// projected off that same real measurement using the platform's
+// published per-layer savings ratios — so the whole "AI system"
+// appears to compress together, with Layer 2 always backed by a
+// live measurement and the rest clearly labeled as projections.
+model SystemCompression {
+  id                 Int      @id @default(autoincrement())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id])
+
+  url                String
+  hostname           String   @default("")
+  status             String   @default("completed") // completed | failed
+  errorMessage       String   @default("")
+
+  // Layer 2 — real, measured against the fetched content
+  originalTokens     Int      @default(0)
+  optimizedTokens    Int      @default(0)
+  savedTokens        Int      @default(0)
+  reductionPct       Float    @default(0)
+  savedDollars       Float    @default(0)
+  source             String   @default("fallback") // claude | fallback
+
+  sourcePreview      String   @default("") // truncated extracted text
+  optimizedPreview   String   @default("") // truncated compressed text
+
+  // Whole-system projection (all 5 layers), derived from the real Layer 2 read
+  estimatedMonthlySpend Float @default(0)
+  totalMonthlySavings   Float @default(0)
+  layersJson            String @default("") // JSON-encoded per-layer breakdown
+
+  createdAt          DateTime @default(now())
+}
+
+// ─── Users ────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      String   @default("demo")
+  company   String   @default("")
+  createdAt DateTime @default(now())
+
+  jobs             Job[]
+  promptLogs       PromptLog[]
+  routingLogs      RoutingLog[]
+  contextLogs      ContextLog[]
+  efficiencyScores EfficiencyScore[]
+  systemCompressions SystemCompression[]
+  agriModels       AgriModel[]
+  cropDiagnoses    CropDiagnosis[]
+  agentSessions    AgentSession[]
+}
+
+// ─── Optimization Jobs (Layer 1) ──────────────────────────────────
+model Job {
+  id              Int      @id @default(autoincrement())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+
+  modelName       String
+  params          String   @default("")
+  arch            String   @default("transformer")
+  strategy        String   @default("quantization_int8")
+  priority        String   @default("normal")
+  gpuLogs         String   @default("")
+  latency         String   @default("")
+  originalSize    Int      @default(0)
+  outputSize      Int      @default(0)
+  modelInputPath  String   @default("")
+  modelOutputPath String   @default("")
+
+  status          String   @default("pending")
+  progress        Int      @default(0)
+  log             String   @default("")
+  savings         Int      @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  result          JobResult?
+  agriModel       AgriModel?
+}
+
+// ─── Job Results ──────────────────────────────────────────────────
+model JobResult {
+  id               Int    @id @default(autoincrement())
+  jobId            Int    @unique
+  job              Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  originalSizeGB   Float  @default(0)
+  compressedSizeGB Float  @default(0)
+  compressionRatio Float  @default(0)
+  accuracyDelta    Float  @default(0)
+  latencyBefore    Float  @default(0)
+  latencyAfter     Float  @default(0)
+  speedupFactor    Float  @default(0)
+  monthlySavings   Int    @default(0)
+  technique        String @default("")
+  benchmark        String @default("")
+  notes            String @default("")
+}
+
+// ─── AI Agents: 9 industry agents (AgriPulse, HealthPulse, TourismPulse,
+// FinPulse, EduPulse, GovPulse, LogiPulse, RetailPulse, EnergyPulse) —
+// each a Claude tool-use agent defined in lib/agents/registry.ts.
+// A session is one conversation; each turn may include tool calls,
+// stored on the assistant AgentMessage row as toolName/toolInput/toolOutput.
+model AgentSession {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  industry  String   // agriculture | health | tourism | fintech | education | government | logistics | retail | energy
+  status    String   @default("active") // active | completed
+
+  messages  AgentMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AgentMessage {
+  id         Int          @id @default(autoincrement())
+  sessionId  Int
+  session    AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  role       String   // user | assistant
+  content    String   @default("")
+  toolCalls  String   @default("") // JSON-encoded array of {tool, input, output} for this turn
+  source     String   @default("") // claude | fallback (assistant rows only)
+
+  createdAt  DateTime @default(now())
+}
+
+// ─── AgriPulse: Deployed Agricultural Models ──────────────────────
+// Created when a completed Compresor AI optimization Job (§13/§22 in
+// the product spec) is "deployed to AgriPulse". Connectivity tier and
+// RAM figures are derived from the Job's real JobResult benchmark —
+// never invented — via lib/agripulse.ts:computeEdgeMetrics.
+model AgriModel {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+
+  jobId         Int      @unique
+  job           Job      @relation(fields: [jobId], references: [id])
+
+  cropType      String   @default("maize")
+  connectivity  String   @default("online") // offline | low-connectivity | online
+  ramRequiredGB Float    @default(0)
+  status        String   @default("deployed")
+
+  diagnoses     CropDiagnosis[]
+
+  deployedAt    DateTime @default(now())
+}
+
+// ─── AgriPulse: Crop Diagnoses ────────────────────────────────────
+// One row per photo a farmer (or a World Bank demo judge) submits to
+// AgriPulse's Crop Health AI (§7 in the product spec).
+model CropDiagnosis {
+  id             Int        @id @default(autoincrement())
+  userId         String
+  user           User       @relation(fields: [userId], references: [id])
+
+  agriModelId    Int?
+  agriModel      AgriModel? @relation(fields: [agriModelId], references: [id])
+
+  cropHint       String     @default("")
+  crop           String     @default("")
+  possibleIssue  String     @default("")
+  confidence     Int        @default(0)
+  lowConfidence  Boolean    @default(false)
+  possibleCauses String     @default("") // JSON-encoded string array
+  recommendation String     @default("")
+  source         String     @default("fallback") // claude | fallback
+
+  createdAt      DateTime   @default(now())
+}
+
+// ─── Layer 2: Prompt Optimization Logs ───────────────────────────
+model PromptLog {
+  id              Int      @id @default(autoincrement())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+
+  originalPrompt  String
+  optimizedPrompt String
+  originalTokens  Int
+  optimizedTokens Int
+  savedTokens     Int
+  reductionPct    Float
+  savedDollars    Float
+
+  createdAt       DateTime @default(now())
+}
+
+// ─── Layer 3: Smart Routing Logs ─────────────────────────────────
+model RoutingLog {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+
+  prompt        String
+  complexity    Float
+  routedTo      String
+  provider      String
+  originalModel String
+  originalCost  Float
+  actualCost    Float
+  savedDollars  Float
+  latencyMs     Int      @default(0)
+
+  createdAt     DateTime @default(now())
+}
+
+// ─── Layer 4: Context Compression Logs ───────────────────────────
+model ContextLog {
+  id               Int      @id @default(autoincrement())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+
+  originalTokens   Int
+  compressedTokens Int
+  savedTokens      Int
+  reductionPct     Float
+  savedDollars     Float
+  turnCount        Int      @default(0)
+
+  createdAt        DateTime @default(now())
+}
+
+// ─── AI Efficiency Score History ──────────────────────────────────
+model EfficiencyScore {
+  id                Int      @id @default(autoincrement())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+
+  costEfficiency    Int      @default(0)
+  tokenEfficiency   Int      @default(0)
+  latencyScore      Int      @default(0)
+  contextEfficiency Int      @default(0)
+  gpuEfficiency     Int      @default(0)
+  infrastructure    Int      @default(0)
+  overall           Int      @default(0)
+
+  calculatedAt      DateTime @default(now())
+}

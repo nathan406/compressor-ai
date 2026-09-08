@@ -1,24 +1,35 @@
 {
-  "name": "compresor-ai-backend",
-  "version": "2.0.0",
-  "description": "Compresor AI — Next.js API Backend (AI Efficiency Operating System)",
+  "name": "compressor-ai-backend",
+  "version": "3.0.0",
+  "description": "Compressor AI — Next.js Serverless Backend (AI Efficiency Operating System)",
   "private": true,
   "scripts": {
     "dev": "next dev -p 8000",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start -p 8000",
-    "lint": "next lint"
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "tsx src/scripts/seed.ts",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",
-    "next": "14.2.5",
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/s3-request-presigner": "^3.600.0",
+    "@prisma/client": "^5.16.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "next": "^14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^5.15.12",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
+    "prisma": "^5.16.0",
+    "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   }
 }

@@ -1,33 +1,38 @@
 /**
  * POST /api/auth/login
- * ─────────────────────────────────────────────────────────────────
- * Validates credentials against the demo user store and returns
- * the user's role on success.
- *
  * Body:   { email: string; password: string }
- * 200:    { role: string; email: string }
- * 401:    { error: "Invalid credentials" }
+ * 200:    { token, role, email, userId, company }
+ * 401:    { error }
  */
-
 import { NextRequest, NextResponse } from "next/server";
-import { USERS } from "@/lib/users";
+import { prisma } from "@/lib/db";
+import { comparePassword, signToken } from "@/lib/auth";
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204 });
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({}));
-  const email    = String(body.email    ?? "").trim().toLowerCase();
-  const password = String(body.password ?? "");
+  try {
+    const body     = await req.json().catch(() => ({}));
+    const email    = String(body.email    ?? "").trim().toLowerCase();
+    const password = String(body.password ?? "");
 
-  const user = USERS[email];
-  if (!user || user.password !== password) {
-    return NextResponse.json(
-      { error: "Invalid credentials" },
-      { status: 401 }
-    );
+    if (!email || !password) {
+      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user || !(await comparePassword(password, user.password))) {
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    }
+
+    const token = signToken({ userId: user.id, email: user.email, role: user.role });
+
+    return NextResponse.json({ token, role: user.role, email: user.email, userId: user.id, company: user.company });
+  } catch (err) {
+    console.error("[login]", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  return NextResponse.json({ role: user.role, email });
 }

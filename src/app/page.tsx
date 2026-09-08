@@ -1,174 +1,81 @@
-'use client';
+export default function Page() {
+  const endpoints = [
+    ["POST",   "/api/auth/login",           "Authenticate — returns JWT token"],
+    ["POST",   "/api/auth/register",         "Create new user account"],
+    ["GET",    "/api/auth/me",               "Current user profile"],
+    ["GET",    "/api/jobs",                  "List all optimization jobs"],
+    ["POST",   "/api/jobs",                  "Create a new optimization job"],
+    ["GET",    "/api/jobs/[id]",             "Fetch one job by ID"],
+    ["PATCH",  "/api/jobs/[id]",             "Update job status / progress / log"],
+    ["DELETE", "/api/jobs/[id]",             "Delete a job"],
+    ["GET",    "/api/jobs/[id]/stream",      "SSE real-time log stream"],
+    ["POST",   "/api/jobs/upload",           "Get presigned R2 upload URL"],
+    ["POST",   "/api/optimize/prompt",       "Layer 2 — Prompt optimization"],
+    ["POST",   "/api/optimize/route",        "Layer 3 — Smart model routing"],
+    ["POST",   "/api/optimize/context",      "Layer 4 — Context compression"],
+    ["GET",    "/api/optimize/score",        "AI Efficiency Score™"],
+    ["POST",   "/api/optimize/scan",         "Full infrastructure scan"],
+    ["GET",    "/api/analytics",             "Aggregated savings dashboard"],
+    ["GET",    "/api/analytics/savings",     "Savings by day (30-day series)"],
+    ["GET",    "/api/analytics/models",      "Per-model cost breakdown"],
+    ["POST",   "/api/claude",                "Claude AI proxy"],
+    ["POST",   "/api/agripulse/deploy",      "Deploy an optimized job to AgriPulse"],
+    ["GET",    "/api/agripulse/models",      "List deployed AgriPulse models + benchmarks"],
+    ["POST",   "/api/agripulse/diagnose",    "Crop Health AI — diagnose a crop photo"],
+    ["GET",    "/api/agripulse/diagnoses",   "Crop diagnosis history"],
+    ["GET",    "/api/agripulse/demo",        "World Bank demo mode — full pipeline state"],
+    ["GET",    "/api/agents",                "List all 9 industry AI Agents"],
+    ["GET",    "/api/agents/sessions",       "List all agent sessions (any industry)"],
+    ["POST",   "/api/agents/[industry]/sessions",         "Start a new session with an agent"],
+    ["GET",    "/api/agents/[industry]/sessions",         "List sessions with an agent"],
+    ["GET",    "/api/agents/[industry]/sessions/[id]",    "Fetch a session transcript"],
+    ["POST",   "/api/agents/[industry]/sessions/[id]/message", "Send a message — runs the agent's tool-use loop"],
+    ["GET",    "/api/health",                "Service health check"],
+  ];
 
-import React, { useState, useEffect, useRef } from 'react';
-import { C, FF, API } from '@/lib/constants';
-import { Landing } from '@/components/landing';
-import { Login } from '@/components/login';
-import { Sidebar } from '@/components/sidebar';
-import { Badge, LiveDot } from '@/components/primitives';
-import { PageOverview } from '@/components/pages/dashboard';
-import { PageJobs, PageUpload } from '@/components/pages/jobs';
-import { PagePromptOptimizer, PageSmartRouting, PageContextCompression, PageInferenceNet } from '@/components/pages/layers';
-
-export default function App() {
-  const [screen, setScreen] = useState('landing');
-  const [role, setRole] = useState<string | null>(null);
-  const [page, setPage] = useState('Overview');
-  const [jobs, setJobs] = useState<any[]>([]);
-  const jid = useRef(0);
-
-  useEffect(() => {
-    fetch(API + '/api/jobs')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (Array.isArray(d) && d.length) {
-          setJobs(d);
-          jid.current = Math.max(...d.map((j: any) => j.id || 0), 0);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const newJob = (data: any) => {
-    const id = ++jid.current;
-    const pn = parseFloat(data.params) || 70;
-    const j = {
-      id,
-      ...data,
-      originalSize: Math.round(pn * 2),
-      status: 'pending',
-      progress: 0,
-      log: '',
-      savings: 0,
-    };
-    setJobs((p) => [...p, j]);
-    setPage('Compression Jobs');
-    fetch(API + '/api/jobs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(j),
-    }).catch(() => {});
-  };
-
-  const ADMIN: Record<string, React.ReactNode> = {
-    Overview: <PageOverview jobs={jobs} setPage={setPage} />,
-    'Upload Model': <PageUpload onJobCreated={newJob} />,
-    'Prompt Optimization': <PagePromptOptimizer onJobCreated={newJob} />,
-    'Smart Routing': <PageSmartRouting onJobCreated={newJob} />,
-    'Context Compression': <PageContextCompression onJobCreated={newJob} />,
-    'Inference Network': <PageInferenceNet onJobCreated={newJob} />,
-    'Compression Jobs': <PageJobs jobs={jobs} setJobs={setJobs} />,
-  };
-
-  const DEMO: Record<string, React.ReactNode> = {
-    Overview: <PageOverview jobs={jobs} setPage={setPage} />,
-    'Upload Model': <PageUpload onJobCreated={newJob} />,
-    'Prompt Optimization': <PagePromptOptimizer onJobCreated={newJob} />,
-    'Smart Routing': <PageSmartRouting onJobCreated={newJob} />,
-    'Context Compression': <PageContextCompression onJobCreated={newJob} />,
-    'Inference Network': <PageInferenceNet onJobCreated={newJob} />,
-    'Compression Jobs': <PageJobs jobs={jobs} setJobs={setJobs} />,
+  const colors: Record<string, string> = {
+    GET: "#00E5FF", POST: "#00E396", PATCH: "#FFB800", DELETE: "#FF4560",
   };
 
   return (
-    <div style={{ background: C.bg, minHeight: '100vh', fontFamily: FF, color: C.gh }}>
-      {screen === 'landing' && <Landing onEnter={() => setScreen('login')} />}
-      {screen === 'login' && (
-        <Login
-          onLogin={(r) => {
-            setRole(r);
-            setScreen('app');
-            setPage('Overview');
-          }}
-        />
-      )}
+    <main style={{ fontFamily: "monospace", padding: "2rem", background: "#06080F", color: "#00E5FF", minHeight: "100vh" }}>
+      <h1 style={{ fontSize: "1.4rem", marginBottom: "0.25rem" }}>Compressor AI — API Server</h1>
+      <p style={{ color: "#6B7A99", marginBottom: "2rem", fontSize: "0.9rem" }}>
+        AI Efficiency Operating System · Next.js Serverless Backend v3.0 · Netlify
+      </p>
 
-      {screen === 'app' && (
-        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-          <Sidebar
-            page={page}
-            setPage={setPage}
-            role={role}
-            onLogout={() => {
-              setScreen('landing');
-              setRole(null);
-              setJobs([]);
-            }}
-            jobs={jobs}
-          />
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                height: 60,
-                borderBottom: `1px solid ${C.br}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0 26px',
-                flexShrink: 0,
-                background: C.sf,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                <span style={{ color: C.gh, fontWeight: 700, fontSize: 15 }}>
-                  {page}
-                </span>
-                {role === 'demo' && <Badge c={C.mu}>Read Only</Badge>}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <LiveDot />
-                  <span style={{ fontSize: 11, color: C.mu }}>5 layers active</span>
-                </div>
-                <div
-                  style={{
-                    background: C.cy + '15',
-                    border: `1px solid ${C.cy}30`,
-                    borderRadius: 8,
-                    padding: '3px 11px',
-                    fontSize: 11,
-                    color: C.cy,
-                    fontWeight: 700,
-                  }}
-                >
-                  Score™ 87/100
-                </div>
-                <Badge c={role === 'admin' ? C.am : C.cy}>
-                  {role === 'admin' ? 'Super Admin' : 'Enterprise Demo'}
-                </Badge>
-              </div>
-            </div>
-            <div
-              style={{
-                flex: 1,
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                background: C.bg,
-              }}
-            >
-              {role === 'admin'
-                ? ADMIN[page] || (
-                    <div style={{ padding: 28, color: C.mu }}>
-                      Select a page from the sidebar.
-                    </div>
-                  )
-                : DEMO[page] || (
-                    <div style={{ padding: 28, color: C.mu }}>
-                      Select a page from the sidebar.
-                    </div>
-                  )}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <thead>
+          <tr style={{ color: "#6B7A99", fontSize: "0.75rem", textTransform: "uppercase" }}>
+            <th style={{ textAlign: "left", padding: "0.4rem 1.2rem 0.4rem 0" }}>Method</th>
+            <th style={{ textAlign: "left", padding: "0.4rem 1.2rem 0.4rem 0" }}>Path</th>
+            <th style={{ textAlign: "left", padding: "0.4rem 0" }}>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {endpoints.map(([method, path, desc]) => (
+            <tr key={path + method} style={{ borderTop: "1px solid #1C2A40" }}>
+              <td style={{ padding: "0.5rem 1.2rem 0.5rem 0", color: colors[method] ?? "#E8EDF5", fontWeight: "bold", fontSize: "0.85rem" }}>
+                {method}
+              </td>
+              <td style={{ padding: "0.5rem 1.2rem 0.5rem 0", color: "#00E5FF", fontSize: "0.85rem" }}>
+                {path}
+              </td>
+              <td style={{ padding: "0.5rem 0", color: "#9BAAC0", fontSize: "0.85rem" }}>
+                {desc}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div style={{ marginTop: "2.5rem", padding: "1rem 1.25rem", background: "#0D1324", border: "1px solid #1C2A40", borderRadius: "8px" }}>
+        <p style={{ color: "#9BAAC0", fontSize: "0.85rem", margin: 0 }}>
+          Health check: <a href="/api/health" style={{ color: "#00E5FF" }}>/api/health</a>
+          &nbsp;·&nbsp;
+          All routes require <code style={{ color: "#FFB800" }}>Authorization: Bearer &lt;token&gt;</code> except login, register, and health.
+        </p>
+      </div>
+    </main>
   );
 }

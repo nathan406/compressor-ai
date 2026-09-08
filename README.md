@@ -1,83 +1,125 @@
-# Compresor AI — Next.js Backend
+# Compressor AI — Next.js Backend v3.0
 
-**AI Efficiency Operating System** · API Server v2.0
+**The AI Efficiency Operating System** — Serverless API deployed on Netlify.
+
+---
 
 ## Stack
 
-- **Next.js 14** (App Router, API Routes only)
-- **TypeScript**
-- **better-sqlite3** — zero-dependency SQLite (persists jobs across restarts)
-- **Anthropic SDK** — proxies Compresor AI requests server-side (key never reaches the browser)
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router, serverless functions) |
+| Language | TypeScript |
+| Database | PostgreSQL via Prisma ORM (Neon free tier) |
+| Auth | JWT + bcrypt |
+| AI | Anthropic Claude (server-side proxy) |
+| Storage | Cloudflare R2 (optional — model file uploads) |
+| Hosting | Netlify (free tier) |
 
-## Quick Start
+---
+
+## Quick Start (Local)
 
 ```bash
-cd backend
-cp .env.example .env.local
-# Add your Anthropic API key to .env.local (optional)
-
+# 1. Install dependencies
 npm install
-npm run dev       # starts on http://localhost:8000
+
+# 2. Set up environment variables
+cp .env.example .env.local
+# Edit .env.local — add DATABASE_URL from neon.tech and JWT_SECRET
+
+# 3. Push schema to database and create demo accounts
+npm run db:push
+npm run db:seed
+
+# 4. Start dev server
+npm run dev
+# → http://localhost:8000
 ```
 
-## Environment Variables
+---
 
-| Variable            | Required | Default               | Description                          |
-|---------------------|----------|-----------------------|--------------------------------------|
-| `ANTHROPIC_API_KEY` | No       | —                     | Enables real Compresor AI responses     |
-| `CLAUDE_MODEL`      | No       | `claude-sonnet-4-6`   | Which Claude model to use            |
-| `DB_PATH`           | No       | `./compresor.db`     | SQLite database file path            |
+## Deploy to Netlify
 
-The app runs fully without an API key — Claude endpoints return the fallback
-text the frontend supplies.
+1. Push this folder to a GitHub repo
+2. Connect repo to Netlify
+3. Add environment variables in **Netlify Dashboard → Site → Environment Variables**:
+
+```
+DATABASE_URL          your Neon connection string
+JWT_SECRET            a long random string
+ANTHROPIC_API_KEY     sk-ant-... (optional — enables real Claude responses)
+CLAUDE_MODEL          claude-sonnet-4-6
+REGISTER_SECRET       any secret string (used to create admin accounts)
+```
+
+4. Netlify auto-detects Next.js and runs `npm run build` on every deploy.
+5. After first deploy, run `npm run db:seed` once locally against the production DB to create the demo accounts.
+
+---
 
 ## API Endpoints
 
-| Method | Path                | Description                          |
-|--------|---------------------|--------------------------------------|
-| POST   | `/api/auth/login`   | Authenticate (returns role)          |
-| GET    | `/api/jobs`         | List all optimization jobs           |
-| POST   | `/api/jobs`         | Create a new optimization job        |
-| GET    | `/api/jobs/[id]`    | Fetch one job by ID                  |
-| PATCH  | `/api/jobs/[id]`    | Update job status / progress / log   |
-| DELETE | `/api/jobs/[id]`    | Delete a job                         |
-| POST   | `/api/claude`       | Proxy prompt to Compresor AI            |
-| GET    | `/api/health`       | Service health check                 |
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/api/auth/login` | — | Authenticate, returns JWT |
+| POST | `/api/auth/register` | — | Create account |
+| GET | `/api/auth/me` | ✓ | Current user profile |
+| GET | `/api/jobs` | ✓ | List all jobs |
+| POST | `/api/jobs` | ✓ | Create optimization job |
+| GET | `/api/jobs/[id]` | ✓ | Fetch one job |
+| PATCH | `/api/jobs/[id]` | ✓ | Update job progress/status |
+| DELETE | `/api/jobs/[id]` | ✓ | Delete a job |
+| GET | `/api/jobs/[id]/stream` | ✓ | SSE real-time log stream |
+| POST | `/api/jobs/upload` | ✓ | Presigned R2 upload URL |
+| POST | `/api/optimize/prompt` | ✓ | Layer 2 — Prompt optimization |
+| POST | `/api/optimize/route` | ✓ | Layer 3 — Smart routing |
+| POST | `/api/optimize/context` | ✓ | Layer 4 — Context compression |
+| GET | `/api/optimize/score` | ✓ | AI Efficiency Score™ |
+| POST | `/api/optimize/scan` | ✓ | Full infrastructure scan |
+| GET | `/api/analytics` | ✓ | Aggregated savings data |
+| GET | `/api/analytics/savings` | ✓ | Savings by day (30-day) |
+| GET | `/api/analytics/models` | ✓ | Per-model cost breakdown |
+| POST | `/api/claude` | — | Claude AI proxy |
+| GET | `/api/health` | — | Health check |
 
-## Connecting the Frontend
+All protected routes require: `Authorization: Bearer <token>`
 
-The static `frontend/index.html` points to `http://localhost:8000` by default.
-To change the backend URL, set `window.COMPRESOR_API_BASE` before the app
-script runs, or serve the HTML from the same origin as the Next.js server.
+---
 
-## Production Deployment
+## Demo Credentials
 
-### Netlify (recommended)
+| Role | Email | Password |
+|------|-------|----------|
+| Super Admin | admin@compressor.ai | admin123 |
+| Enterprise Demo | demo@enterprise.ai | demo123 |
 
-The project includes a `netlify.toml` at the repo root for zero-config deployment.
+---
 
-1. Push the repo to GitHub
-2. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
-3. Select your repo — the `netlify.toml` handles the base directory automatically
-4. Netlify auto-detects Next.js via the OpenNext adapter
-5. Add environment variables in **Site settings → Environment variables**:
+## What Each Layer Does
 
-| Variable            | Required | Description                        |
-|---------------------|----------|------------------------------------|
-| `ANTHROPIC_API_KEY` | No       | Enables real Compresor AI responses   |
-| `CLAUDE_MODEL`      | No       | Claude model (default: claude-sonnet-4-6) |
+| Layer | Route | What runs |
+|-------|-------|-----------|
+| Layer 2 | `/api/optimize/prompt` | Claude Haiku rewrites prompts shorter |
+| Layer 3 | `/api/optimize/route` | Complexity scoring routes to cheaper models |
+| Layer 4 | `/api/optimize/context` | Claude Haiku compresses conversation history |
+| Layer 1 | Job worker (future) | Model quantization/pruning/distillation |
+| Layer 5 | Infrastructure (future) | GPU rebalancing, load balancing |
 
-6. Deploy — the app goes live with a Netlify URL
+Layers 2, 3, 4 are fully functional serverless today.
+Layers 1 and 5 require a GPU server — jobs are queued and tracked in the database.
 
-> **Note:** The JSON file database is ephemeral on Netlify's serverless
-> functions. Jobs won't persist across redeploys. For persistence,
-> swap `lib/db.ts` for a PostgreSQL connection (e.g. Neon, Supabase).
+---
 
-### Other hosts
+## The 5-Layer Platform
 
-```bash
-npm run build
-npm start         # production server on port 8000
+```
+AI Model → User Request → GPU → Response
+   L1          L2    L3    L4       L5
 ```
 
-Deploy to Vercel, Railway, Fly.io, or any Node.js host.
+- **L1 Model Optimization** — Quantization, pruning, distillation (GPU required)
+- **L2 Prompt Optimization** — Remove redundant tokens before sending to any model
+- **L3 Smart Routing** — Route by complexity to the cheapest adequate model
+- **L4 Context Compression** — Summarize conversation history to reduce context size
+- **L5 Inference Network** — GPU fleet rebalancing and load distribution (future)
