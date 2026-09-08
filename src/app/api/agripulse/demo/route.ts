@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
     agriModel,
     edgeMetrics,
     infraComparison,
-    recentDiagnoses: recentDiagnoses.map((d: any) => ({
+    recentDiagnoses: recentDiagnoses.map((d) => ({
       ...d,
       possibleCauses: d.possibleCauses ? JSON.parse(d.possibleCauses) : [],
     })),

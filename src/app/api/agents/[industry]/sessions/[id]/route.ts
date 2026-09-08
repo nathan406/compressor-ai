@@ -27,7 +27,7 @@ export async function GET(req: NextRequest, ctx: Ctx) {
 
   return NextResponse.json({
     ...session,
-    messages: session.messages.map((m: any) => ({
+    messages: session.messages.map((m) => ({
       ...m,
       toolCalls: m.toolCalls ? JSON.parse(m.toolCalls) : [],
     })),

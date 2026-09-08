@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   });
 
   return NextResponse.json(
-    diagnoses.map((d: any) => ({
+    diagnoses.map((d) => ({
       ...d,
       possibleCauses: d.possibleCauses ? JSON.parse(d.possibleCauses) : [],
     }))

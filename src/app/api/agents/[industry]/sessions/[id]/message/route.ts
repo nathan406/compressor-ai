@@ -43,7 +43,7 @@ export async function POST(req: NextRequest, ctx: Ctx) {
     where:   { sessionId },
     orderBy: { createdAt: "asc" },
   });
-  const history: AgentHistoryMessage[] = priorMessages.map((m: { role: string; content: string }) => ({
+  const history: AgentHistoryMessage[] = priorMessages.map((m) => ({
     role:    m.role === "assistant" ? "assistant" : "user",
     content: m.content,
   }));
