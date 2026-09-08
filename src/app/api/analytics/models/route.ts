@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     avgSpeedup: number;
   }> = {};
 
-  jobs.forEach((j) => {
+  jobs.forEach((j: any) => {
     if (!modelMap[j.modelName]) {
       modelMap[j.modelName] = { jobCount: 0, totalSavings: 0, avgCompressionRatio: 0, avgSpeedup: 0 };
     }
@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
 
   // Routing breakdown by model
   const routingMap: Record<string, { count: number; totalSaved: number }> = {};
-  routingLogs.forEach((l) => {
+  routingLogs.forEach((l: any) => {
     if (!routingMap[l.routedTo]) routingMap[l.routedTo] = { count: 0, totalSaved: 0 };
     routingMap[l.routedTo].count++;
     routingMap[l.routedTo].totalSaved += l.savedDollars;

@@ -32,22 +32,22 @@ export async function GET(req: NextRequest) {
     if (!dayMap[dateStr]) dayMap[dateStr] = { l1: 0, l2: 0, l3: 0, l4: 0 };
   };
 
-  jobs.forEach((j) => {
+  jobs.forEach((j: any) => {
     const d = j.createdAt.toISOString().slice(0, 10);
     addDay(d);
     dayMap[d].l1 += j.savings;
   });
-  promptLogs.forEach((l) => {
+  promptLogs.forEach((l: any) => {
     const d = l.createdAt.toISOString().slice(0, 10);
     addDay(d);
     dayMap[d].l2 += l.savedDollars;
   });
-  routingLogs.forEach((l) => {
+  routingLogs.forEach((l: any) => {
     const d = l.createdAt.toISOString().slice(0, 10);
     addDay(d);
     dayMap[d].l3 += l.savedDollars;
   });
-  contextLogs.forEach((l) => {
+  contextLogs.forEach((l: any) => {
     const d = l.createdAt.toISOString().slice(0, 10);
     addDay(d);
     dayMap[d].l4 += l.savedDollars;

@@ -50,11 +50,11 @@ export async function POST(req: NextRequest) {
     {
       layer:    "L2 — Prompt Optimization",
       action:   "Enable automatic prompt compression on all API calls",
-      current:  `avg ${promptLogs.length > 0 ? Math.round(promptLogs.reduce((s,l)=>s+l.originalTokens,0)/promptLogs.length) : 1000} tokens/prompt`,
-      optimized:`avg ${promptLogs.length > 0 ? Math.round(promptLogs.reduce((s,l)=>s+l.optimizedTokens,0)/promptLogs.length) : 620} tokens/prompt`,
+      current:  `avg ${promptLogs.length > 0 ? Math.round(promptLogs.reduce((s: number,l: any)=>s+l.originalTokens,0)/promptLogs.length) : 1000} tokens/prompt`,
+      optimized:`avg ${promptLogs.length > 0 ? Math.round(promptLogs.reduce((s: number,l: any)=>s+l.optimizedTokens,0)/promptLogs.length) : 620} tokens/prompt`,
       saving:   `$${Math.round(monthlySpend * 0.031).toLocaleString()}/mo`,
       priority: "high",
-      pct:      promptLogs.length > 0 ? Math.round(promptLogs.reduce((s,l)=>s+l.reductionPct,0)/promptLogs.length) : 38,
+      pct:      promptLogs.length > 0 ? Math.round(promptLogs.reduce((s: number,l: any)=>s+l.reductionPct,0)/promptLogs.length) : 38,
     },
     {
       layer:    "L3 — Smart Routing",
@@ -68,11 +68,11 @@ export async function POST(req: NextRequest) {
     {
       layer:    "L4 — Context Compression",
       action:   "Compress conversation histories before each API call",
-      current:  `avg ${contextLogs.length > 0 ? Math.round(contextLogs.reduce((s,l)=>s+l.originalTokens,0)/contextLogs.length) : 20000} tokens/session`,
-      optimized:`avg ${contextLogs.length > 0 ? Math.round(contextLogs.reduce((s,l)=>s+l.compressedTokens,0)/contextLogs.length) : 3000} tokens/session`,
+      current:  `avg ${contextLogs.length > 0 ? Math.round(contextLogs.reduce((s: number,l: any)=>s+l.originalTokens,0)/contextLogs.length) : 20000} tokens/session`,
+      optimized:`avg ${contextLogs.length > 0 ? Math.round(contextLogs.reduce((s: number,l: any)=>s+l.compressedTokens,0)/contextLogs.length) : 3000} tokens/session`,
       saving:   `$${Math.round(monthlySpend * 0.074).toLocaleString()}/mo`,
       priority: "high",
-      pct:      contextLogs.length > 0 ? Math.round(contextLogs.reduce((s,l)=>s+l.reductionPct,0)/contextLogs.length) : 85,
+      pct:      contextLogs.length > 0 ? Math.round(contextLogs.reduce((s: number,l: any)=>s+l.reductionPct,0)/contextLogs.length) : 85,
     },
     {
       layer:    "L5 — Inference Network",

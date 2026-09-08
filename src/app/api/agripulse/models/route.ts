@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
   });
 
   const withComparisons = agriModels
-    .filter((m) => m.job.result)
-    .map((m) => {
+    .filter((m: any) => m.job?.result)
+    .map((m: any) => {
       const edgeMetrics = computeEdgeMetrics(m.job.result!);
       return {
         agriModel: m,
